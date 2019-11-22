@@ -1,0 +1,27 @@
+package android
+
+import (
+	"net/http"
+	"io/ioutil"	
+	"strings"
+	"github.com/gin-gonic/gin"
+)
+
+
+func SendPushToAndroid(pushToken string, authkey string, sendit string)  {
+
+	url := gin.Default()
+	payload := strings.NewReader(pushToken)
+	req, _ := http.NewRequest("POST", sendit, payload)
+
+	url.Run(sendit)
+
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "key="+authkey)
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	
+}
+
