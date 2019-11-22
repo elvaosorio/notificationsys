@@ -1,0 +1,25 @@
+package apple
+
+import (
+	"fmt"
+	"github.com/anachronistic/apns"
+)
+
+
+
+func SendPushToApple(pushText string, pushToken string, authkey string, certif string) {
+	fmt.Println("SendPushToApple")
+	fmt.Println("pushText: ", pushText)
+	fmt.Println("pushToken: ", pushToken)
+	
+	payload := apns.NewPayload()
+	payload.Alert = pushText
+	pn := apns.NewPushNotification()
+	pn.DeviceToken = pushToken
+	pn.AddPayload(payload)
+	client := apns.NewClient(authkey, certif, certif)
+	resp := client.Send(pn)
+	fmt.Println("Success:", resp.Success)
+}
+
+
